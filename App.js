@@ -1,16 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView, Dimensions, ImageBackground, Animated, TouchableOpacity, Alert } from 'react-native';
+import { Component } from 'react';
+import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView, Dimensions, ImageBackground, Animated, TouchableOpacity, Alert, AppRegistry } from 'react-native';
 
-import { Header, Icon, Button, Chip, Card, ListItem, ViewPagerAndroid, PricingCard } from "react-native-elements";
+import { Header, Icon, Button, Chip, Card, ListItem, ViewPagerAndroid, PricingCard, } from "react-native-elements";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import { Asset } from 'react-native-unimodules';
+import Polyline from '@mapbox/polyline';
 
 import { markers, } from './mapData';
+
+import navigate from './navigate' ;
 
 
 const Stack = createNativeStackNavigator();
@@ -33,6 +37,11 @@ const App = () => {
           name="Search" 
           component={Search}
           options ={{ title: 'SEARCH & BOOK' }} 
+        />
+        <Stack.Screen
+          name="navigate"
+          component={navigate}
+          options={{ title: 'Navigate' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -106,13 +115,17 @@ return (
         title="BOOKED"
         price="$00.00"
         info={['Id : 120391', 'Ace Mall, Northwest Street, Thanjavur.', ]}
-        button={{ title: 'PAY NOW', icon: 'attach-money', size : 15 }}
+        button={{ title: 'PAY NOW', icon: 'attach-money', size : 15}}
+        onButtonPress= { () =>
+          alert('Payment Successful!')
+        }
+        
       />
 
       <Button
         title=" NAVIGATE "
         onPress= { () =>
-          navigation.navigate('Logs', { Id: '120391' })
+          navigation.navigate('navigate')
         }
       />
     </Card>
@@ -203,7 +216,10 @@ const Search = ({ navigation, route }) => {
 
 
 const Rental = ({ navigation, route }) => {
-  return <Text>This is {route.params.Id}'s profile</Text>;
+  
+  return ( 
+    <Text>This is {route.params.Id}'s profile</Text>
+  );
   
 };
 
@@ -328,6 +344,6 @@ const styles = StyleSheet.create({
       fontSize: 14,
       fontWeight: 'bold'
   },
-
+  
 
 });

@@ -5,7 +5,9 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": "Smart Parking System For Smart Cities :)",
+    "githubUrl": "https://github.com/shalini-saravanan/SmartPark"
   },
   "name": "SmartPark"
 }
