@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "SmartPark",
+    "slug": "SmartPark",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "SmartPark"
+}
