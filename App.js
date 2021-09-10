@@ -11,33 +11,36 @@ import { NavigationContainer } from '@react-navigation/native';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import { Asset } from 'react-native-unimodules';
 import Polyline from '@mapbox/polyline';
+import Sockets from 'react-native-sockets';
 
 import { markers, } from './mapData';
 import navigate from './navigate' ;
 import booking from './booking' ;
 import profile from './profile' ;
-
+import rental from './rental';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+
+
   return (
     <NavigationContainer>
        <Stack.Navigator initialRouteName="HomeScreen">
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ title: 'SMART PARKING' }}
+          options={{ title: 'Smart Parking' }}
         />
         <Stack.Screen 
-          name="Rental" 
-          component={Rental}
-          options ={{ title: 'DASHBOARD' }} 
+          name="rental" 
+          component={rental}
+          options ={{ title: 'Dashboard' }} 
         />
         <Stack.Screen 
           name="Search" 
           component={Search}
-          options ={{ title: 'SEARCH & BOOK' }} 
+          options ={{ title: 'Search & Book' }} 
         />
         <Stack.Screen
           name="navigate"
@@ -62,6 +65,7 @@ const App = () => {
 
 const HomeScreen = ({ navigation }) => {
 const [index, setIndex] = React.useState(0);
+
 return (
   <ScrollView style={styles.scrollView}>
     
@@ -124,7 +128,7 @@ return (
            
             loadingProps={{ animating: true }}
             onPress= { () =>
-              navigation.navigate('Rental', { Id: '120391' })
+              navigation.navigate('rental')
             }
             icon={{
             name: "settings",
@@ -242,16 +246,6 @@ const Search = ({ navigation, route }) => {
     </ScrollView>
     
   );
-};
-
-
-
-const Rental = ({ navigation, route }) => {
-  
-  return ( 
-    <Text>This is {route.params.Id}'s profile</Text>
-  );
-  
 };
 
 
