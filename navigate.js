@@ -19,8 +19,8 @@ class LocationA extends Component {
       concat: null,
       coords:[],
       x: 'false',
-      cordLatitude:10.806020314253614,
-      cordLongitude: 79.13784711174497,
+      cordLatitude:10.78301489989674, 
+      cordLongitude: 79.13182498197831,
     };
 
     this.mergeLot = this.mergeLot.bind(this);

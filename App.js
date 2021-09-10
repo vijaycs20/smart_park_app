@@ -13,8 +13,9 @@ import { Asset } from 'react-native-unimodules';
 import Polyline from '@mapbox/polyline';
 
 import { markers, } from './mapData';
-
 import navigate from './navigate' ;
+import booking from './booking' ;
+import profile from './profile' ;
 
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,17 @@ const App = () => {
           component={navigate}
           options={{ title: 'Navigate' }}
         />
+        <Stack.Screen
+          name="booking"
+          component={booking}
+          options={{ title: 'Book Slot' }}
+        />
+        <Stack.Screen
+          name="profile"
+          component={profile}
+          options={{ title: 'My Profile' }}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -76,6 +88,29 @@ return (
             padding: 10,
             }}  
           />
+
+          <View style={styles.top_out}></View>
+            
+            <Chip
+              title="PROFILE   "
+              titleStyle={{
+              color: "white",
+              fontSize: 16,
+              fontWeight: "bold",
+              }}
+             
+              loadingProps={{ animating: true }}
+              onPress= { () =>
+                navigation.navigate('profile')
+              }
+              icon={{
+              name: "account-circle",
+              type: "material",
+              size: 22,
+              color: 'white',
+              padding: 10,
+              }}
+            />
 
           <View style={styles.top_out}></View>
             
@@ -115,18 +150,11 @@ return (
         title="BOOKED"
         price="$00.00"
         info={['Id : 120391', 'Ace Mall, Northwest Street, Thanjavur.', ]}
-        button={{ title: 'PAY NOW', icon: 'attach-money', size : 15}}
+        button={{ title: 'NAVIGATE', icon: 'place', size : 15}}
         onButtonPress= { () =>
-          alert('Payment Successful!')
-        }
-        
-      />
-
-      <Button
-        title=" NAVIGATE "
-        onPress= { () =>
           navigation.navigate('navigate')
         }
+        
       />
     </Card>
 
@@ -167,7 +195,7 @@ const Search = ({ navigation, route }) => {
           {state.markers.map((marker, index) => {
           return (
             <Marker key={index} coordinate={marker.coordinate} image={require('./assets/map_marker.png')} >
-              <Callout tooltip onPress={() => console.log("This is logged")}>
+              <Callout tooltip onPress= { () => navigation.navigate('booking') }>
                 <View>
                   <View style={styles.bubble}>
                     <Text style={styles.name}>{marker.title}</Text>
@@ -190,6 +218,9 @@ const Search = ({ navigation, route }) => {
                               color: '#FF6347'
                             }
                           ]}
+                          onPress= { () =>
+                            navigation.navigate('navigate')
+                          }
                         > 
                           BOOK NOW 
                         </Text>
@@ -249,7 +280,7 @@ const styles = StyleSheet.create({
   },
 
   top_out: {
-    paddingTop: 20,
+    paddingTop: 15,
     alignSelf: "center",
   },
 
@@ -264,7 +295,7 @@ const styles = StyleSheet.create({
     elevation: 6,
 
     width: (Dimensions.get('window').width - 30),
-    height: 230,
+    height: 260,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
