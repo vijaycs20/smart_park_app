@@ -7,19 +7,33 @@ export const booking = () => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-
+  var Time_n, Date_n;
   
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    console.log(currentDate);
+    Time_n = currentDate.toLocaleTimeString();
+    Date_n = currentDate.toLocaleDateString();
+  };
+
+  const confirmBooking = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    Time_n = currentDate.toLocaleTimeString();
+    Date_n = currentDate.toLocaleDateString();
+    console.log(Time_n);
+    console.log(Date_n);
   };
 
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
+    
   };
+
+  
 
   const showDatepicker = () => {
     showMode('date');
@@ -85,9 +99,7 @@ export const booking = () => {
       <Card.Divider/>
         <Button
         title=" Confirm Booking "
-        onPress= {  () =>
-          alert('Booked Your Slot Successfully!')
-        }
+        onPress= {confirmBooking}
       />
        </Card>
       {show && (
@@ -164,6 +176,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     opacity: 1
   },
-
 
 });

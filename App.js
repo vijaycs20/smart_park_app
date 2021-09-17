@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Component } from 'react';
-import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView, Dimensions, ImageBackground, Animated, TouchableOpacity, Alert, AppRegistry } from 'react-native';
+import { StyleSheet, Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback, Text, View, Image, SafeAreaView, ScrollView, Dimensions, ImageBackground, Animated, TouchableOpacity, Alert, AppRegistry } from 'react-native';
 
 import { Header, Icon, Button, Chip, Card, ListItem, ViewPagerAndroid, PricingCard, } from "react-native-elements";
 
@@ -11,7 +11,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import { Asset } from 'react-native-unimodules';
 import Polyline from '@mapbox/polyline';
-import Sockets from 'react-native-sockets';
 
 import { markers, } from './mapData';
 import navigate from './navigate' ;
@@ -19,18 +18,24 @@ import booking from './booking' ;
 import profile from './profile' ;
 import rental from './rental';
 
+
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
 
-
   return (
     <NavigationContainer>
-       <Stack.Navigator initialRouteName="HomeScreen">
+       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Home"
           component={HomeScreen}
           options={{ title: 'Smart Parking' }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{header: () => null}}
         />
         <Stack.Screen 
           name="rental" 
@@ -249,6 +254,35 @@ const Search = ({ navigation, route }) => {
 };
 
 
+const Login = ({ navigation, route }) => {
+  
+
+  return (
+    
+    <KeyboardAvoidingView style={styles.containerView} behavior="padding">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.loginScreenContainer}>
+          <View style={styles.loginFormView}>
+            
+          <Text style={styles.logoText}>Smart Parking</Text>
+            <TextInput placeholder="Username" placeholderColor="#c4c3cb" style={styles.loginFormTextInput} />
+            <TextInput placeholder="Password" placeholderColor="#c4c3cb" style={styles.loginFormTextInput} secureTextEntry={true}/>
+            <Button
+              buttonStyle={styles.loginButton}
+              onPress= { () =>
+                navigation.navigate('Home')
+              }
+              title="Login"
+            />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    
+  );
+};
+
+
 
 export default App;
 
@@ -271,6 +305,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
     elevation: 6,
+  },
+  containerView: {
+    flex: 1,
   },
 
   top_out: {
@@ -369,6 +406,45 @@ const styles = StyleSheet.create({
       fontSize: 14,
       fontWeight: 'bold'
   },
+  loginScreenContainer: {
+    flex: 1,
+    padding: 25,
+  },
+
+  logoText: {
+    fontSize: 35,
+    fontWeight: "800",
+    marginTop: 150,
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  loginFormView: {
+    flex: 1
+  },
+  loginFormTextInput: {
+    height: 43,
+    fontSize: 14,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#eaeaea',
+    backgroundColor: '#fafafa',
+    paddingLeft: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 5,
+    marginBottom: 5,
   
+  },
+  loginButton: {
+    backgroundColor: '#3897f1',
+    borderRadius: 5,
+    height: 45,
+    marginTop: 10,
+  },
+  fbLoginButton: {
+    height: 45,
+    marginTop: 10,
+    backgroundColor: 'transparent',
+  },
 
 });
