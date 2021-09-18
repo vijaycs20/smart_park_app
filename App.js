@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Component } from 'react';
+import { useState, Component } from 'react';
 import { StyleSheet, Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback, Text, View, Image, SafeAreaView, ScrollView, Dimensions, ImageBackground, Animated, TouchableOpacity, Alert, AppRegistry } from 'react-native';
 
 import { Header, Icon, Button, Chip, Card, ListItem, ViewPagerAndroid, PricingCard, } from "react-native-elements";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import { Asset } from 'react-native-unimodules';
@@ -14,9 +15,9 @@ import Polyline from '@mapbox/polyline';
 
 import { markers, } from './mapData';
 import navigate from './navigate' ;
-import booking from './booking' ;
 import profile from './profile' ;
 import rental from './rental';
+import Modal from './Modal';
 
 
 
@@ -31,16 +32,19 @@ const App = () => {
           name="Home"
           component={HomeScreen}
           options={{ title: 'Smart Parking' }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{header: () => null}}
+          initialParams={{ status: 'NOT BOOKED', date: '-', time: '--', amt: '₹ 00.00', address: '---', longitude: '.', latitude:'..'}}
         />
         <Stack.Screen 
           name="rental" 
           component={rental}
           options ={{ title: 'Dashboard' }} 
+        />
+        <Stack.Screen 
+          name="Login" 
+          component={Login}
+          options={{
+            headerShown: false
+        }}
         />
         <Stack.Screen 
           name="Search" 
@@ -62,21 +66,27 @@ const App = () => {
           component={profile}
           options={{ title: 'My Profile' }}
         />
+        <Stack.Screen
+          name="Modal"
+          component={Modal}
+          options={{ title: 'Register' }}
+        />
         
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
 const [index, setIndex] = React.useState(0);
+const {status, amt, date, time, address, longitude, latitude} = route.params;
 
 return (
   <ScrollView style={styles.scrollView}>
     
     <View style={styles.top_out}>
       <View style={styles.top}>
-        <ImageBackground  style= { styles.backgroundImage } source={require('./assets/bg1.png')} >
+        <ImageBackground  style= { styles.backgroundImage } source={require('./assets/bg1.png') } borderRadius={50} >
           <Chip
             title="SEARCH     "
             titleStyle={{
@@ -124,7 +134,7 @@ return (
           <View style={styles.top_out}></View>
             
           <Chip
-            title="RENTAL    "
+            title="  RENT       "
             titleStyle={{
             color: "white",
             fontSize: 16,
@@ -150,21 +160,45 @@ return (
       <View style={{ height: 5,}} />
     </View>
         
-    <Card style={styles.box_shadow}>
+    <Card style={styles.box_shadow} borderRadius={18}>
       <Card.Title style={{color:"#2089dc", fontSize:20, fontWeight:"bold"}}>MY PARKING LOT</Card.Title>
       <Card.Divider/>
     
       <PricingCard
+        borderRadius={5}
         color="#4f9deb"
-        title="BOOKED"
-        price="$00.00"
-        info={['Id : 120391', 'Ace Mall, Northwest Street, Thanjavur.', ]}
-        button={{ title: 'NAVIGATE', icon: 'place', size : 15}}
+        title= {status}
+        price= {amt}
+        info={[date, time, address]}
+        button={{ title: 'NAVIGATE', icon: 'place', size : 15,}}
         onButtonPress= { () =>
           navigation.navigate('navigate')
         }
         
       />
+    </Card>
+    <Card style={styles.box_shadow} borderRadius={18}>
+      <Card.Title style={{color:"#2089dc", fontSize:20, fontWeight:"bold"}}>Monetize My Slot</Card.Title>
+      <Chip
+            title="Register    "
+            titleStyle={{
+            color: "white",
+            fontSize: 16,
+            fontWeight: "bold",
+            }}
+           
+            loadingProps={{ animating: true }}
+            onPress= { () =>
+              navigation.navigate('Modal')
+            }
+            icon={{
+            name: "account-circle",
+            type: "material",
+            size: 22,
+            color: 'white',
+            padding: 10,
+            }}
+          />
     </Card>
 
     <View style={styles.top_out}></View>
@@ -252,6 +286,140 @@ const Search = ({ navigation, route }) => {
     
   );
 };
+
+
+const booking = ({ navigation, route }) => {
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  var Time_n, Date_n;
+  
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    Time_n = currentDate.toLocaleTimeString();
+    Date_n = currentDate.toLocaleDateString();
+  };
+
+  const confirmBooking = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    Time_n = currentDate.toLocaleTimeString();
+    Date_n = currentDate.toLocaleDateString();
+    fetch('https://webhook.site/eee77d0e-cadd-4f80-81db-bc116e392980', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      date: Date_n,
+      time: Time_n,
+      amt: 60,
+      p_id: '101',
+    })
+    });
+    alert("Booked your slot successfully!");
+    navigation.navigate('Home', {status : 'BOOKED', date : Date_n, time : Time_n, amt: '₹ 10.00', address : 'Park 3, Ace Mall, Thanjavur', longitude : '', longitude: ''});
+    
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+    
+  };
+
+  
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+
+  return (
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.top_out}>
+    <View style={styles.top}>
+        <ImageBackground  style= { styles.backgroundImage } borderRadius={25} source={require('./assets/bg1.png')} >
+          <Chip
+            title="Select Date"
+            titleStyle={{
+            color: "white",
+            fontSize: 16,
+            fontWeight: "bold",
+            }}
+           
+            loadingProps={{ animating: true }}
+            onPress={showDatepicker}
+            icon={{
+            name: "today",
+            type: "material",
+            size: 24,
+            color: 'white',
+            padding: 10,
+            }}  
+          />
+
+          <View style={styles.top_out}></View>
+            
+          <Chip
+            title="Select Time"
+            titleStyle={{
+            color: "white",
+            fontSize: 16,
+            fontWeight: "bold",
+            }}
+           
+            loadingProps={{ animating: true }}
+            onPress={showTimepicker}
+            icon={{
+            name: "timer",
+            type: "material",
+            size: 22,
+            color: 'white',
+            padding: 10,
+            }}
+          />
+
+        </ImageBackground>
+        <View>
+        </View>
+    </View>
+    </View>
+    <Card borderRadius={25}>
+      <Card.Title style={{color:"#696969", fontSize:20, fontWeight:"bold"}}>Cost ₹ 40 / hr </Card.Title>
+      <Card.Divider/>
+        <Button
+        title=" Confirm Booking "
+        onPress= {confirmBooking}
+      />
+       </Card>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={false}
+          display="spinner"
+          onChange={onChange}
+          minimumDate={date}
+        />
+        
+      )}
+   
+    
+    <View style={styles.top_out}></View>
+      
+    </ScrollView>
+      
+    );
+  };  
 
 
 const Login = ({ navigation, route }) => {

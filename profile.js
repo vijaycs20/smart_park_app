@@ -9,22 +9,22 @@ export const profile = () => {
     <ScrollView style={styles.scrollView}>
     <View style={styles.top_out}></View>
     <View style={styles.top}>
-    <ImageBackground  style= { styles.backgroundImage } source={require('./assets/bg1.png')} >
+    <ImageBackground  style= { styles.backgroundImage } borderRadius={18} source={require('./assets/bg1.png')} >
       <View style={styles.detail}>
     <Avatar 
     size='large'
   rounded
   source={require('./assets/avatar.jpg')}
 /><Text style ={{fontSize: 15, fontWeight:'bold',}}>{"\n"}Sarah Lones{"\n"}</Text>
-<Badge value="TN 49 ZZ 1111" status="primary" />
+<Badge value="TN 32 AZ 5055" status="primary" />
 </View>
 </ImageBackground>
     </View>
-    <PricingCard
-        color="#4f9deb"
-        title="WALLET"
-        price="$250.00"
-        info={['  Minimum Balance of Rs.100 Should be maintained for Booking new slots! ' ]}
+    <PricingCard borderRadius={18}
+        color="#708090"
+        title="My Wallet"
+        price="$68.20"
+        info={['  Minimum Balance of $25 Should be maintained for Booking new slots! ' ]}
         button={{ title: 'Add Money', icon: 'attach-money', size : 15}}
         onButtonPress= { () =>
           alert("Wallet Updated Successfully!")

@@ -8,7 +8,7 @@ export const rental = () => {
     <ScrollView style={styles.scrollView}>
     
 
-    <Card style={styles.box_shadow}>
+    <Card style={styles.box_shadow} borderRadius={18}>
       <Card.Title style={{color:"#2089dc", fontSize:20, fontWeight:"bold"}}>My Account</Card.Title>
   
       <Card.Divider/>
@@ -21,18 +21,19 @@ export const rental = () => {
     />
     
       <PricingCard
-        
+        borderRadius={10}
         title="UID : 7441"
         price="Ms. Sanjana"
         info={['Owner Id : 120391', 'Park-area : Ace Mall, Northwest Street, Thanjavur.', ]}
-        button={{ title: ' Verified', icon: 'verified',color: 'green', size : 5}}
+        button={{ title: ' Verified', icon: 'verified',color: '#4e9e44', size : 5}}
         />
 
 
     </Card>
 
     <PricingCard                              
-        
+        borderRadius={18}  
+        color="#708090" 
         title="My Wallet"
         price="$ 250.99"
         info={['  Minimum Balance of $25 Should be there to redeem. ' ]}

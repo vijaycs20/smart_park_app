@@ -1,54 +1,127 @@
-// import React, { useState } from "react";  
-// import { Button, StyleSheet, Text, View } from "react-native";  
-// import NativeForms, { sendCompletedForm } from "native-forms"; // must be version >= 1.1.4  
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  TouchableHighlight,
+  Image,
+  Photo,
+  Alert,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
+
+import {Avatar} from "react-native-elements";
+
+
+export default class form extends Component {
+
+  onClickListener = (viewId) => {
+    Alert.alert("Alert", "Button pressed "+viewId);
+  }
+
   
-// // must be JSON object exported from Dashboard  
-// const OFFLINE_FORM = {/* label: 'Offline Form'... */};  
-  
-// const App = () => {  
-//   const [savedForm, updateSavedForm] = useState(null);  
-//   const [hasForm, showForm] = useState(false);  
-//   const show = () => showForm(true);  
-//   const hide = () => showForm(false);  
-  
-//   const sendSavedForm = async () => {  
-//     if (savedForm) {  
-//       await sendCompletedForm(savedForm);  
-//       console.warn("Form sent successfully");  
-//     } else {  
-//       console.warn("No saved form to send");  
-//     }
-//   };
-  
-//   return (  
-//     <View style={styles.container}>  
-//       <Text>Offline forms test</Text>  
-  
-//       <Button title="Show Form" onPress={show} color="#20f" />  
-//       <Button title="Send Saved Form" onPress={sendSavedForm} />  
-  
-//       {hasForm && (  
-//         <NativeForms  
-// 	  formJSON={OFFLINE_FORM}  
-//           onClose={hide}  
-//           noInternetConnection={formJSON => {  
-//             updateSavedForm(formJSON);  
-//             return true; // yes, I will send form once user is online  
-//             // return false; <- No, don't send a thing
-// 	  }}
-//         />
-//       )}
-//     </View>  
-//   );
-// };  
-  
-// const styles = StyleSheet.create({  
-//   container: {  
-//     flex: 1,  
-//     backgroundColor: "#fff",  
-//     alignItems: "center",  
-//     justifyContent: "center"  
-//   }  
-// });  
-  
-// export default App;
+
+  render() {
+    return (
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          
+          <TextInput style={styles.inputs}
+              placeholder="Full name"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+            />
+        </View>
+
+        <View style={styles.inputContainer}>
+          
+          <TextInput style={styles.inputs}
+              placeholder="Contact Number"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+              />
+        </View>
+
+        <View style={styles.inputContainer}>
+          
+          <TextInput style={styles.inputs}
+              placeholder="Email"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+              />
+        </View>
+        
+        <View style={styles.inputContainer}>
+          
+          <TextInput style={styles.inputs}
+              placeholder="Location Longitude"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+            />
+        </View>
+        <View style={styles.inputContainer}>
+        <TextInput style={styles.inputs}
+              placeholder="Location Lattitude"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+        />
+        </View>
+
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => alert("Request Sent!\nWe'll reach you shortly.")}>
+          <Text style={styles.signUpText}>Register</Text>
+        </TouchableHighlight>
+      </View>
+      </ScrollView>
+
+      
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    height: Dimensions.get('window').height,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e6f1fa',
+    paddingBottom: 90,
+  },
+  inputContainer: {
+      borderBottomColor: '#F5FCFF',
+      backgroundColor: '#FFFFFF',
+      borderRadius:30,
+      borderBottomWidth: 1,
+      width:250,
+      height:45,
+      marginBottom:20,
+      flexDirection: 'row',
+      alignItems:'center'
+  },
+  inputs:{
+      height:45,
+      marginLeft:16,
+      borderBottomColor: '#FFFFFF',
+      flex:1,
+  },
+  buttonContainer: {
+    height:45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom:20,
+    width:250,
+    borderRadius:30,
+  },
+  signupButton: {
+    backgroundColor: "#2089dc",
+  },
+  signUpText: {
+    color: 'white',
+    fontSize: 16,
+    
+  }
+});
